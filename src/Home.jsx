@@ -1,13 +1,16 @@
 import React, { useState, useEffect } from "react";
 import { AiOutlineShoppingCart } from "react-icons/ai";
 import ProductList from "./ProductList";
-import CartItems from "./CartItems"; // Import the CartItems component
+import CartItems from "./CartItems";
+import { useNavigate } from "react-router-dom";
 
 const Home = () => {
   const [products, setProducts] = useState([]);
   const [cartItems, setCartItems] = useState([]);
   const [loading, setLoading] = useState(true);
   const [showcart, setShowcard] = useState(false);
+  const navigate = useNavigate();
+
   const getAllProducts = () => {
     fetch("https://fakestoreapi.com/products")
       .then((res) => res.json())
@@ -39,29 +42,20 @@ const Home = () => {
     setShowcard(true);
   };
 
-  if (showcart) {
-    return (
-      <div>
-        {" "}
-        <CartItems cartItems={cartItems} addToCart={addToCart} />
-      </div>
-    );
-  }
+  useEffect(() => {
+    if (showcart) {
+      navigate("/cartitems", { state: { cartItems: cartItems } });
+    }
+  }, [showcart]);
 
   if (loading) {
     return (
       <div>
-        <br />
-        <br />
-        <br></br>
-        <br />
-        <br />
-        <center>
-          <h1>Loading.....</h1>
-        </center>
+        {/* Loading indicator */}
       </div>
     );
   }
+
   return (
     <div>
       <ProductList
@@ -70,7 +64,7 @@ const Home = () => {
         addToCart={addToCart}
       />
 
-      <button onClick={handleSubmit}>Show Cart</button>
+      <button className="btn btn-success" onClick={handleSubmit}>Show Cart</button>
     </div>
   );
 };

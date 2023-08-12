@@ -13,6 +13,7 @@ const ProductList = ({ cartItems, products, addToCart }) => {
           style={{
             height: "30px",
             width: "30px",
+            color:"blue",
           }}
         />
         {cartItems.length}
